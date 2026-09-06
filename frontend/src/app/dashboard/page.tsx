@@ -1399,22 +1399,22 @@ export default function DashboardPage() {
                         <tr key={h.symbol} className="hover:bg-surface-container-high transition-colors">
                           <td className="py-2.5 px-3 font-bold text-on-surface">{h.symbol}</td>
                           <td className="py-2.5 px-3 font-label-numeric-md">{h.quantity}</td>
-                          <td className="py-2.5 px-3 font-label-numeric-md">₹{h.averagePrice.toFixed(2)}</td>
+                          <td className="py-2.5 px-3 font-label-numeric-md">₹{(h.averagePrice ?? (h as any).averageBuyPrice ?? 0).toFixed(2)}</td>
                           <td className="py-2.5 px-3 font-label-numeric-md font-semibold text-on-surface">
-                            ₹{h.lastPrice.toFixed(2)}
+                            ₹{(h.lastPrice ?? 0).toFixed(2)}
                           </td>
                           <td className="py-2.5 px-3 font-label-numeric-md">
-                            ₹{h.investedValue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                            ₹{(h.investedValue ?? (h.quantity * (h.averagePrice ?? (h as any).averageBuyPrice ?? 0))).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-2.5 px-3 font-label-numeric-md">
-                            ₹{h.currentValue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                            ₹{(h.currentValue ?? (h.quantity * (h.lastPrice ?? 0))).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td
                             className={`py-2.5 px-3 font-label-numeric-md font-bold ${
-                              h.unrealizedPnl >= 0 ? "text-primary" : "text-secondary"
+                              (h.unrealizedPnl ?? 0) >= 0 ? "text-primary" : "text-secondary"
                             }`}
                           >
-                            {h.unrealizedPnl >= 0 ? "+" : ""}₹{h.unrealizedPnl.toFixed(2)}
+                            {(h.unrealizedPnl ?? 0) >= 0 ? "+" : ""}₹{(h.unrealizedPnl ?? ((h.quantity * (h.lastPrice ?? 0)) - (h.quantity * (h.averagePrice ?? (h as any).averageBuyPrice ?? 0)))).toFixed(2)}
                           </td>
                         </tr>
                       ))}

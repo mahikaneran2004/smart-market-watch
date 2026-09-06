@@ -277,8 +277,26 @@ export async function GET(
 
   // 2. Portfolio
   if (route === "portfolio") {
-    const invested = portfolioState.holdings.reduce((sum, h) => sum + h.quantity * h.averageBuyPrice, 0);
-    const current = portfolioState.holdings.reduce((sum, h) => sum + h.quantity * (basePrices[h.symbol]?.currentPrice || h.lastPrice), 0);
+    const holdings = portfolioState.holdings.map((h) => {
+      const lastPrice = basePrices[h.symbol]?.currentPrice || h.lastPrice;
+      const averagePrice = h.averageBuyPrice;
+      const investedValue = Number((h.quantity * averagePrice).toFixed(2));
+      const currentValue = Number((h.quantity * lastPrice).toFixed(2));
+      const unrealizedPnl = Number((currentValue - investedValue).toFixed(2));
+      return {
+        symbol: h.symbol,
+        quantity: h.quantity,
+        averagePrice,
+        averageBuyPrice: averagePrice,
+        lastPrice,
+        investedValue,
+        currentValue,
+        unrealizedPnl,
+      };
+    });
+
+    const invested = holdings.reduce((sum, h) => sum + h.investedValue, 0);
+    const current = holdings.reduce((sum, h) => sum + h.currentValue, 0);
     const pnl = current - invested;
 
     return NextResponse.json({
@@ -289,10 +307,7 @@ export async function GET(
         investedAmount: invested,
         currentValue: current,
         unrealizedPnL: Number(pnl.toFixed(2)),
-        holdings: portfolioState.holdings.map((h) => ({
-          ...h,
-          lastPrice: basePrices[h.symbol]?.currentPrice || h.lastPrice,
-        })),
+        holdings,
       },
     });
   }
