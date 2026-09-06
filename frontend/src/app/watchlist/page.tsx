@@ -12,8 +12,8 @@ import {
 } from "../../types/watchlistContract";
 import InteractivePriceChart from "../../components/InteractivePriceChart";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || (typeof window !== "undefined" ? window.location.origin : "http://localhost:8000");
 
 export default function SmartMarketWatchPage() {
   const router = useRouter();

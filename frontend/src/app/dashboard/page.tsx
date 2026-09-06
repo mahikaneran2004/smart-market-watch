@@ -170,8 +170,8 @@ type QuoteMeta = {
   change?: number;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL ?? API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || (typeof window !== "undefined" ? window.location.origin : "http://localhost:8000");
 
 export default function DashboardPage() {
   const [token, setToken] = useState<string | null>(null);
