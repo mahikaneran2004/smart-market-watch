@@ -530,5 +530,5 @@ The problem statement asks how the system scales and where simplicity was chosen
 
 ## Branch Model
 
-- **`madhav`**: Clean canonical application branch (current branch).
+- **`main`**: Clean canonical application branch.
 - **`hackathon-scenarios`**: Submission branch containing deterministic evaluator scenarios and demo infrastructure.

@@ -208,7 +208,7 @@ test("I: resolveSymbolPrice works seamlessly with mock provider", async () => {
 });
 
 // ── J. No production scenario-controller behavior has been introduced ────────
-test("J: No scenario-controller routes exist on madhav branch", async () => {
+test("J: No scenario-controller routes exist on main branch", async () => {
   const server = http.createServer(app);
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const address = server.address();
@@ -223,7 +223,7 @@ test("J: No scenario-controller routes exist on madhav branch", async () => {
       body: JSON.stringify({ scenario: "big_move" }),
     });
 
-    // On madhav branch, scenario endpoint should be 401 (auth middleware on /watchlist) or 404
+    // On main branch, scenario endpoint should be 401 (auth middleware on /watchlist) or 404
     assert.ok(
       res.status === 401 || res.status === 404,
       `Scenario controller must not exist or be accessible: got ${res.status}`
